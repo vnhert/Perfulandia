@@ -1,13 +1,15 @@
 package com.perfulandia.perfulandia.controller;
 
 
+import com.perfulandia.perfulandia.model.Client;
+import com.perfulandia.perfulandia.service.ClientService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 public class ClientController {
     @Autowired
-    Clientservice clientService;
+    ClientService clientService;
 
     @GetMapping("/users")
     public String getUsers(){
@@ -19,7 +21,8 @@ public class ClientController {
         return clientService.getClient(id);
     }
     @PostMapping("/users")
-    public String addUser(@RequestBody Client user){
+    public String addUser(@RequestBody Client client)
+    {
         return clientService.saveClient(client);
     }
 
@@ -30,6 +33,6 @@ public class ClientController {
 
     @PutMapping("/users")
     public String updateClient(@RequestBody Client user){
-        return clientService.updateClient(user);
+        return clientService.updateUser(user);
     }
 }

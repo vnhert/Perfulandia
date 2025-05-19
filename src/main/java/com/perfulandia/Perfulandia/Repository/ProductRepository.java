@@ -1,6 +1,7 @@
 package com.perfulandia.perfulandia.repository;
 
 import com.perfulandia.perfulandia.model.Product;
+import org.springframework.data.jpa.repository.JpaRepository;
 
-public class ProductRepository extends JpaRepository<Product, Integer> {
+public interface ProductRepository extends JpaRepository<Product, Integer> {
 }

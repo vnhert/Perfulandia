@@ -72,7 +72,7 @@ public class ProductService {
                     product.setDescripcion(newProduct.getDescripcion());
                     product.setPrecio(newProduct.getPrecio());
                     product.setStock(newProduct.getStock());
-                    ProductRepository.save(product);
+                    productRepository.save(product);
                 }
             }
             return "Producto actualizado con éxito";

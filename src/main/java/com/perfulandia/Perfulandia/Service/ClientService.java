@@ -1,4 +1,6 @@
 package com.perfulandia.perfulandia.service;
+import com.perfulandia.perfulandia.model.Client;
+import com.perfulandia.perfulandia.repository.ClientRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -9,7 +11,7 @@ public class ClientService {
     ClientRepository clientRepository;
 
     public String saveClient(Client client) {
-        return userRepository.addClient(client);
+        return clientRepository.addClient(client);
     }
 
     public String getClient(int id) {
