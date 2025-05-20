@@ -15,15 +15,15 @@ public class ClientService {
     }
 
     public String getClient(int id) {
-        return ClientRepository.getClient(id);
+        return clientRepository.getClient(id);
     }
     public String deleteClient(int id) {
-        return userRepository.deleteClient(id);
+        return clientRepository.deleteClient(id);
     }
     public String getAllClients() {
         return clientRepository.getClients();
     }
     public String updateUser(Client user) {
-        return clientRepository.updateUser(user);
+        return clientRepository.updateClient(user);
     }
 }
