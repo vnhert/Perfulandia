@@ -21,9 +21,11 @@ public class OrderService {
         String output = "";
         for (Order order : orders) {
             output += "ID Pedido: " + order.getId() + "\n";
-            output += "Cliente: " + order.getClient().getNombre() + "\n";
-            output += "Venta ID: " + order.getSale().getId() + "\n";
             output += "Estado: " + order.getEstado() + "\n\n";
+            output += "Fecha de entrega: " + order.getFechaEntrega() + "\n\n";
+            output += "Metodo de envio: " + order.getMetodoEnvio() + "\n\n";
+            output += "Costo envio: " + order.getCosto() + "\n\n";
+
         }
 
         return output;
@@ -34,9 +36,10 @@ public class OrderService {
         for (Order order : orders) {
             if (order.getId() == id) {
                 output += "ID Pedido: " + order.getId() + "\n";
-                output += "Cliente: " + order.getClient().getNombre() + "\n";
-                output += "Venta ID: " + order.getSale().getId() + "\n";
-                output += "Estado: " + order.getEstado();
+                output += "Estado: " + order.getEstado() + "\n\n";
+                output += "Fecha de entrega: " + order.getFechaEntrega() + "\n\n";
+                output += "Metodo de envio: " + order.getMetodoEnvio() + "\n\n";
+                output += "Costo envio: " + order.getCosto() + "\n\n";
             }
         }
 
