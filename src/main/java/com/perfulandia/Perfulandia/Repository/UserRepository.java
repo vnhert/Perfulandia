@@ -10,11 +10,10 @@ public class UserRepository {
     private List<User> users = new ArrayList<>();
 
     public UserRepository() {
-        //
-        /*
-        users.add(new User("1", "Juan", "gerente sucursal", "juan@gmail.com", "1234"));
-        users.add(new User("2", "Ana", "empleado", "ana@gmail.com", "abcd"));
-        */
+
+        users.add(new User(1, "Juan", "gerente sucursal", "juan@gmail.com", "1234"));
+        users.add(new User(2, "Ana", "empleado", "ana@gmail.com", "abcd"));
+
     }
 
     public String getUsers() {
