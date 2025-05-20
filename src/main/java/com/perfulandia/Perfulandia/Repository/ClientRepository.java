@@ -12,9 +12,6 @@ public class ClientRepository {
 
     public ClientRepository() {
 
-        clients.add(new Client(1, "Cliente1", "cliente1@example.com", "Calle Falsa 123", "+56912345678"));
-        clients.add(new Client(2, "Cliente2", "cliente2@example.com", "Av. Siempre Viva 742", "+56987654321"));
-
     }
 
     public String getClients() {

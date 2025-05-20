@@ -18,5 +18,5 @@ public class Order {
     private int id;
     private Client client;
     private Sale sale;
-    private String estado; //en reparto, en espera de reparto etc.
+    private String estado;
 }

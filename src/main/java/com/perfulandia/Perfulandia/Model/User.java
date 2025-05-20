@@ -6,7 +6,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class User {
+public abstract class User {
     private int id;
     private String nombre;
     private String rol;//puede ser gerente sucursal, empleado etc.}
