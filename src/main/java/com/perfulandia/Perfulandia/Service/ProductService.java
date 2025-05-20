@@ -1,9 +1,9 @@
-package com.perfulandia.perfulandia.service;
+package com.perfulandia.Perfulandia.Service;
 
 import org.springframework.stereotype.Service;
 
-import com.perfulandia.perfulandia.model.Product;
-import com.perfulandia.perfulandia.repository.ProductRepository;
+import com.perfulandia.Perfulandia.Model.Product;
+import com.perfulandia.Perfulandia.Repository.ProductRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

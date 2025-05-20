@@ -1,8 +1,8 @@
-package com.perfulandia.perfulandia.controller;
+package com.perfulandia.Perfulandia.Controller;
 
 
-import com.perfulandia.perfulandia.model.Client;
-import com.perfulandia.perfulandia.service.ClientService;
+import com.perfulandia.Perfulandia.Model.Client;
+import com.perfulandia.Perfulandia.Service.ClientService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 

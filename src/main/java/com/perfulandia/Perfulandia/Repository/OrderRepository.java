@@ -1,4 +1,4 @@
-package com.perfulandia.perfulandia.repository;
+package com.perfulandia.Perfulandia.Repository;
 
 public class OrderRepository {
 }

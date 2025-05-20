@@ -1,6 +1,6 @@
-package com.perfulandia.perfulandia.service;
-import com.perfulandia.perfulandia.model.Client;
-import com.perfulandia.perfulandia.repository.ClientRepository;
+package com.perfulandia.Perfulandia.Service;
+import com.perfulandia.Perfulandia.Model.Client;
+import com.perfulandia.Perfulandia.Repository.ClientRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

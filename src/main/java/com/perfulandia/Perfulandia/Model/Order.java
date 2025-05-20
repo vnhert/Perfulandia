@@ -1,4 +1,4 @@
-package com.perfulandia.perfulandia.model;
+package com.perfulandia.Perfulandia.Model;
 
 public class Order {
 }

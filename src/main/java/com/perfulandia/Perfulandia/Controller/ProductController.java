@@ -1,4 +1,4 @@
-package com.perfulandia.perfulandia.controller;
+package com.perfulandia.Perfulandia.Controller;
 
 public class ProductController {
 }

@@ -1,7 +1,7 @@
-package com.perfulandia.perfulandia.repository;
+package com.perfulandia.Perfulandia.Repository;
 import org.springframework.stereotype.Repository;
 
-import com.perfulandia.perfulandia.model.Client;
+import com.perfulandia.Perfulandia.Model.Client;
 
 import java.util.ArrayList;
 import java.util.List;

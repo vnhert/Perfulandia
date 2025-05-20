@@ -1,4 +1,4 @@
-package com.perfulandia.perfulandia.service;
+package com.perfulandia.Perfulandia.Service;
 
 public class OrderService {
 }
