@@ -5,7 +5,7 @@ import com.perfulandia.perfulandia.Service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-public class OrderRepository {
+public class OrderController {
     @Autowired
     private OrderService orderService;
 
