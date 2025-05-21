@@ -20,4 +20,6 @@ public class Product {
     private double precio;
     private int stock;
     private String categoria;
+
+
 }
