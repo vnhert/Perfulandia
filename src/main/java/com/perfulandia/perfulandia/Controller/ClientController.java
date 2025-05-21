@@ -11,27 +11,27 @@ public class ClientController {
     @Autowired
     ClientService clientService;
 
-    @GetMapping("/users")
+    @GetMapping("/clients")
     public String getUsers(){
         return clientService.getAllClients();
     }
 
-    @GetMapping("/users/{id}")
+    @GetMapping("/clients/{id}")
     public String getClientById(@PathVariable int id){
         return clientService.getClient(id);
     }
-    @PostMapping("/users")
+    @PostMapping("/clients")
     public String addUser(@RequestBody Client client)
     {
         return clientService.saveClient(client);
     }
 
-    @DeleteMapping("/users/{id}")
+    @DeleteMapping("/clients/{id}")
     public String deleteClient(@PathVariable int id){
         return clientService.deleteClient(id);
     }
 
-    @PutMapping("/users")
+    @PutMapping("/clients")
     public String updateClient(@RequestBody Client user){
         return clientService.updateUser(user);
     }
