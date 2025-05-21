@@ -7,32 +7,33 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
+@RequestMapping("/clientes")
 public class ClientController {
     @Autowired
     ClientService clientService;
 
-    @GetMapping("/clients")
-    public String getUsers(){
-        return clientService.getAllClients();
+    @GetMapping()
+    public String getClients(){
+        return clientService.getClients();
     }
 
-    @GetMapping("/clients/{id}")
-    public String getClientById(@PathVariable int id){
+    @GetMapping("/{id}")
+    public String getClient(@PathVariable int id){
         return clientService.getClient(id);
     }
-    @PostMapping("/clients")
-    public String addUser(@RequestBody Client client)
+    @PostMapping()
+    public String addClient(@RequestBody Client client)
     {
-        return clientService.saveClient(client);
+        return clientService.addClient(client);
     }
 
-    @DeleteMapping("/clients/{id}")
+    @DeleteMapping("/{id}")
     public String deleteClient(@PathVariable int id){
         return clientService.deleteClient(id);
     }
 
-    @PutMapping("/clients")
-    public String updateClient(@RequestBody Client user){
-        return clientService.updateUser(user);
+    @PutMapping("/{id}")
+    public String updateClient(@RequestBody Client client){
+        return clientService.updateClient(client);
     }
 }

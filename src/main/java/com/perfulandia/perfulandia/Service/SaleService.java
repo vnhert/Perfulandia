@@ -1,44 +1,56 @@
 package com.perfulandia.perfulandia.Service;
 import com.perfulandia.perfulandia.Model.Sale;
+import com.perfulandia.perfulandia.Repository.SaleRepository;
+import com.perfulandia.perfulandia.Model.User;
+import com.perfulandia.perfulandia.Repository.UserRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.util.ArrayList;
-import java.util.List;
 
 @Service
 public class SaleService {
-    private List<Sale> sales = new ArrayList<>();
+    @Autowired
+    private SaleRepository saleRepository;
 
-    public String getSales() {
-        if (sales.isEmpty()) {
-            return "No hay ventas registradas";
+
+    public String getSales(User solicitante) {
+        if (!solicitante.puedeGestionarVentas()) {
+            return "No tienes permiso para ver ventas";
         }
-
-        StringBuilder output = new StringBuilder();
-        for (Sale sale : sales) {
-            output.append("ID de venta: ").append(sale.getId()).append("\n");
-            output.append("Nombre del producto: ").append(sale.getProduct().getNombre()).append("\n");
-            output.append("Cantidad: ").append(sale.getCantidad()).append("\n");
-            output.append("Fecha: ").append(sale.getFecha()).append("\n\n");
-        }
-
-        return output.toString();
-    }
-
-    public String addSale(Sale newSale) {
-        sales.add(newSale);
-        return "Venta agregado con éxito";
-    }
-
-    public String getSale(int id, String fecha) {
         String output = "";
+        for (Sale sale : saleRepository.findAll()) {
+            output += "ID de venta: " + sale.getId() + "\n";
+            output += "Nombre del producto: " + sale.getProduct().getNombre() + "\n";
+            output += "Cantidad: " + sale.getCantidad() + "\n";
+            output += "Cliente: " + sale.getClient().getNombre() + "\n";
+            output += "Fecha: " + sale.getFecha() + "\n\n";
+        }
 
-        for (Sale sale : sales) {
-            if (sale.getProduct().getId() == id && sale.getFecha().equals(fecha)) {
+        if (output.isEmpty()) {
+            return "No hay ventas registradas";
+        } else {
+            return output;
+        }
+    }
+
+    public String addSale(User solicitante,Sale newSale) {
+        if (!solicitante.puedeGestionarVentas()) {
+            return "No tienes permiso para añadir ventas";
+        }
+        saleRepository.save(newSale);
+        return "Venta agregada con éxito";
+    }
+
+    public String getSale(User solicitante,int id) {
+        if (!solicitante.puedeGestionarVentas()) {
+            return "No tienes permiso para ver ventas";
+        }
+        String output = "";
+        for (Sale sale : saleRepository.findAll()) {
+            if (sale.getId() == id) {
                 output += "ID de venta: " + sale.getId() + "\n";
-                output += "Nombre: " + sale.getProduct().getNombre() + "\n";
+                output += "Producto: " + sale.getProduct().getNombre() + "\n";
                 output += "Cantidad: " + sale.getCantidad() + "\n";
-                output += "Cliente: " + sale.getClient() + "\n";
+                output += "Cliente: " + sale.getClient().getNombre() + "\n";
                 output += "Fecha: " + sale.getFecha();
             }
         }
@@ -50,32 +62,36 @@ public class SaleService {
         }
     }
 
-    public String deleteSale(int id, String fecha) {
-        for (Sale sale : sales) {
-            if (sale.getId() == id && sale.getFecha().equals(fecha)) {
-                sales.remove(sale);
-                return "Venta eliminada con éxito";
-            }
+    public String deleteSale(User solicitante, int id) {
+        if (!solicitante.puedeGestionarVentas()) {
+            return "No tienes permiso para borrar ventas";
         }
-        return "Venta no encontrada";
-    }
-
-    public String updateSale(Sale updatedSale) {
-        int index = -1;
-
-        for (int i = 0; i < sales.size(); i++) {
-            Sale o = sales.get(i);
-            if (o.getProduct().getId() == updatedSale.getProduct().getId() &&
-                    o.getFecha().equals(updatedSale.getFecha())) {
-                index = i;
-            }
-        }
-
-        if (index == -1) {
-            return "Venta no encontrada";
+        if (saleRepository.existsById(id)) {
+            saleRepository.deleteById(id);
+            return "Venta eliminada con éxito";
         } else {
-            sales.set(index, updatedSale);
-            return "Venta actualizada con éxito";
+            return "Venta no encontrada";
         }
     }
+
+    public String updateSale(User solicitante,int id, Sale newSale) {
+        if (!solicitante.puedeGestionarVentas()) {
+            return "No tienes permiso para actualizar ventas";
+        }
+        if (saleRepository.existsById(id)) {
+            for (Sale sale : saleRepository.findAll()) {
+                if (sale.getId() == id) {
+                    sale.setProduct(newSale.getProduct());
+                    sale.setCantidad(newSale.getCantidad());
+                    sale.setClient(newSale.getClient());
+                    sale.setFecha(newSale.getFecha());
+                    saleRepository.save(sale);
+                }
+            }
+            return "Venta actualizada con éxito";
+        } else {
+            return "Venta no encontrada";
+        }
+    }
+
 }

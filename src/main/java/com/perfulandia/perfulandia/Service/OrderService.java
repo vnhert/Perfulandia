@@ -1,5 +1,6 @@
 package com.perfulandia.perfulandia.Service;
 import com.perfulandia.perfulandia.Model.Order;
+import com.perfulandia.perfulandia.Model.Product;
 import com.perfulandia.perfulandia.Repository.OrderRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -11,35 +12,39 @@ import java.util.List;
 public class OrderService {
     @Autowired
     private OrderRepository orderRepository;
-    private List<Order> orders = new ArrayList<>();
+
 
     public String getOrders() {
-        if (orders.isEmpty()) {
-            return "No hay pedidos registrados";
-        }
-
         String output = "";
-        for (Order order : orders) {
-            output += "ID Pedido: " + order.getId() + "\n";
-            output += "Estado: " + order.getEstado() + "\n\n";
-            output += "Fecha de entrega: " + order.getFechaEntrega() + "\n\n";
-            output += "Metodo de envio: " + order.getMetodoEnvio() + "\n\n";
-            output += "Costo envio: " + order.getCosto() + "\n\n";
-
+        for (Order order : orderRepository.findAll()) {
+            output += "ID de pedido: " + order.getId() + "\n";
+            output += "Estado del pedido: " + order.getEstado() + "\n";
+            output += "Fecha de entrega: " + order.getFechaEntrega() + "\n";
+            output += "Metodo de envio: " + order.getMetodoEnvio() + "\n";
+            output += "Costo de envio: " + order.getCosto() + "\n\n";
         }
 
-        return output;
+        if (output.isEmpty()) {
+            return "No hay pedidos registrados";
+        } else {
+            return output;
+        }
+    }
+
+    public String addOrder(Order newOrder) {
+        orderRepository.save(newOrder);
+        return "Pedido agregado con éxito";
     }
 
     public String getOrder(int id) {
         String output = "";
-        for (Order order : orders) {
+        for (Order order : orderRepository.findAll()) {
             if (order.getId() == id) {
-                output += "ID Pedido: " + order.getId() + "\n";
-                output += "Estado: " + order.getEstado() + "\n\n";
-                output += "Fecha de entrega: " + order.getFechaEntrega() + "\n\n";
-                output += "Metodo de envio: " + order.getMetodoEnvio() + "\n\n";
-                output += "Costo envio: " + order.getCosto() + "\n\n";
+                output += "ID de pedido: " + order.getId() + "\n";
+                output += "Estado del pedido: " + order.getEstado() + "\n";
+                output += "Fecha de entrega: " + order.getFechaEntrega() + "\n";
+                output += "Metodo de envio: " + order.getMetodoEnvio() + "\n";
+                output += "Costo de envio: " + order.getCosto() + "\n\n";
             }
         }
 
@@ -50,28 +55,30 @@ public class OrderService {
         }
     }
 
-    public String addOrder(Order order) {
-        orders.add(order);
-        return "Pedido agregado con éxito";
-    }
-
     public String deleteOrder(int id) {
-        for (Order order : orders) {
-            if (order.getId() == id) {
-                orders.remove(order);
-                return "Pedido eliminado con éxito";
-            }
+        if (orderRepository.existsById(id)) {
+            orderRepository.deleteById(id);
+            return "Pedido eliminado con éxito";
+        } else {
+            return "Pedido no encontrado";
         }
-        return "Pedido no encontrado";
     }
 
-    public String updateOrderState(int id,String nuevoEstado) {
-        for (Order order : orders) {
-            if (order.getId() == id) {
-                order.setEstado(nuevoEstado);
-                return "Estado del pedido actualizado con éxito";
+    public String updateOrder(int id, Order newOrder) {
+        if (orderRepository.existsById(id)) {
+            for (Order order : orderRepository.findAll()) {
+                if (order.getId() == id) {
+                    order.setEstado(newOrder.getEstado());
+                    order.setFechaEntrega(newOrder.getFechaEntrega());
+                    order.setMetodoEnvio(newOrder.getMetodoEnvio());
+                    order.setCosto(newOrder.getCosto());
+
+                }
             }
+            return "Pedido actualizado con éxito";
+        } else {
+            return "Pedido no encontrado";
         }
-        return "Pedido no encontrado";
     }
+
 }

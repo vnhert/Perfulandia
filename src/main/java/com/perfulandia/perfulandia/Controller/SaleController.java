@@ -1,37 +1,38 @@
 package com.perfulandia.perfulandia.Controller;
-import com.perfulandia.perfulandia.Model.Sale;
+import com.perfulandia.perfulandia.Model.SaleActionRequest;
+import com.perfulandia.perfulandia.Model.User;
 import com.perfulandia.perfulandia.Service.SaleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
+@RequestMapping("/ventas")
 public class SaleController {
     @Autowired
     private SaleService saleService;
 
     @GetMapping
-    public String getOrders() {
-        return saleService.getSales();
+    public String getSales(@RequestBody User solicitante) {
+        return saleService.getSales(solicitante);
     }
 
-    // Para obtener una orden específica, usando productId y fecha como identificadores
-    @GetMapping("/{productId}/{fecha}")
-    public String getOrder(@PathVariable int productId, @PathVariable String fecha) {
-        return saleService.getSale(productId, fecha);
+    @GetMapping("/{id}")
+    public String getSale(@RequestBody User solicitante, @PathVariable int id) {
+        return saleService.getSale(solicitante, id);
     }
 
     @PostMapping
-    public String addOrder(@RequestBody Sale sale) {
-        return saleService.addSale(sale);
+    public String addSale(@RequestBody SaleActionRequest request) {
+        return saleService.addSale(request.getSolicitante(), request.getSale());
     }
 
-    @DeleteMapping("/{productId}/{fecha}")
-    public String deleteOrder(@PathVariable int productId, @PathVariable String fecha) {
-        return saleService.deleteSale(productId, fecha);
+    @DeleteMapping("/{id}")
+    public String deleteSale(@RequestBody User solicitante, @PathVariable int id) {
+        return saleService.deleteSale(solicitante, id);
     }
 
-    @PutMapping
-    public String updateOrder(@RequestBody Sale sale) {
-        return saleService.updateSale(sale);
+    @PutMapping("/{id}")
+    public String updateSale(@RequestBody SaleActionRequest request, @PathVariable int id) {
+        return saleService.updateSale(request.getSolicitante(), id, request.getSale());
     }
 }

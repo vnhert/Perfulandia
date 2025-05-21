@@ -6,6 +6,7 @@ import com.perfulandia.perfulandia.Model.Product;
 import com.perfulandia.perfulandia.Repository.ProductRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import com.perfulandia.perfulandia.Model.User;
 
 @Service
 public class ProductService {
@@ -13,7 +14,10 @@ public class ProductService {
     @Autowired
     private ProductRepository productRepository;
 
-    public String getProducts() {
+    public String getProducts(User solicitante) {
+        if (!solicitante.puedeGestionarProductos()) {
+            return "No tienes permiso para ver productos";
+        }
         String output = "";
         for (Product product : productRepository.findAll()) {
             output += "ID Producto: " + product.getId() + "\n";
@@ -30,12 +34,18 @@ public class ProductService {
         }
     }
 
-    public String addProduct(Product newProduct) {
+    public String addProduct(User solicitante,Product newProduct) {
+        if (!solicitante.puedeGestionarProductos()) {
+            return "No tienes permiso para agregar productos";
+        }
         productRepository.save(newProduct);
         return "Producto agregado con éxito";
     }
 
-    public String getProduct(int id) {
+    public String getProduct(User solicitante,int id) {
+        if (!solicitante.puedeGestionarProductos()) {
+            return "No tienes permiso para ver productos";
+        }
         String output = "";
         for (Product product : productRepository.findAll()) {
             if (product.getId() == id) {
@@ -54,7 +64,10 @@ public class ProductService {
         }
     }
 
-    public String deleteProduct(int id) {
+    public String deleteProduct(User solicitante,int id) {
+        if (!solicitante.puedeGestionarProductos()) {
+            return "No tienes permiso para eliminar productos";
+        }
         if (productRepository.existsById(id)) {
             productRepository.deleteById(id);
             return "Producto eliminado con éxito";
@@ -63,7 +76,10 @@ public class ProductService {
         }
     }
 
-    public String updateProduct(int id, Product newProduct) {
+    public String updateProduct(User solicitante,int id, Product newProduct) {
+        if (!solicitante.puedeGestionarProductos()) {
+            return "No tienes permiso para actualizar productos";
+        }
         if (productRepository.existsById(id)) {
             for (Product product : productRepository.findAll()) {
                 if (product.getId() == id) {

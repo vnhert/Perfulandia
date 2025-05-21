@@ -5,7 +5,9 @@ import com.perfulandia.perfulandia.Service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-public class OrderRepository {
+@RestController
+@RequestMapping("/pedidos")
+public class OrderController {
     @Autowired
     private OrderService orderService;
 
@@ -29,6 +31,6 @@ public class OrderRepository {
     }
 
     @PutMapping("/{id}")
-   public String updateOrderState (@PathVariable int id, @RequestBody Order order) {return orderService.updateOrderState(id,order.getEstado());
+   public String updateOrder (@PathVariable int id, @RequestBody Order order) {return orderService.updateOrder(id,order);
     }
 }
