@@ -93,4 +93,17 @@ public class OrderService {
         return "Pedido actualizado con éxito";
     }
 
+    public String updateStateOrder(User solicitante, int id, Order newOrder) {
+        if (!solicitante.puedeActualizarPedido()) {
+            return "No tienes permiso para actualizar estado de pedidos";
+        }
+        Order order = orderRepository.findById(id).orElse(null);
+        if (order == null) {
+            return "Pedido no encontrado";
+        }
+        order.setEstado(newOrder.getEstado());
+        orderRepository.save(order);
+        return "Estado del Pedido actualizado con éxito";
+    }
+
 }

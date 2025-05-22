@@ -22,4 +22,8 @@ public class Sale {
     private Client client;
     private int cantidad;
     private String fecha;
+
+    @ManyToOne
+    @JoinColumn(name = "branch_id")
+    private Branch branch;
 }

@@ -22,6 +22,7 @@ public class SaleService {
             output += "Nombre del producto: " + sale.getProduct().getNombre() + "\n";
             output += "Cantidad: " + sale.getCantidad() + "\n";
             output += "Cliente: " + sale.getClient().getNombre() + "\n";
+            output += "Sucursal: " + sale.getBranch() + "\n";
             output += "Fecha: " + sale.getFecha() + "\n\n";
         }
 
@@ -51,6 +52,7 @@ public class SaleService {
                 output += "Producto: " + sale.getProduct().getNombre() + "\n";
                 output += "Cantidad: " + sale.getCantidad() + "\n";
                 output += "Cliente: " + sale.getClient().getNombre() + "\n";
+                output += "Sucursal: " + sale.getBranch() + "\n";
                 output += "Fecha: " + sale.getFecha();
             }
         }
@@ -85,6 +87,7 @@ public class SaleService {
                     sale.setCantidad(newSale.getCantidad());
                     sale.setClient(newSale.getClient());
                     sale.setFecha(newSale.getFecha());
+                    sale.setBranch(newSale.getBranch());
                     saleRepository.save(sale);
                 }
             }

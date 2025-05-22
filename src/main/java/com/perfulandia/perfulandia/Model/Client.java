@@ -1,8 +1,6 @@
 package com.perfulandia.perfulandia.Model;
-
-import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
+import jakarta.persistence.DiscriminatorValue;
+import jakarta.persistence.Entity;
 import lombok.NoArgsConstructor;
 
 
@@ -11,6 +9,6 @@ import lombok.NoArgsConstructor;
 
 @DiscriminatorValue("CLIENTE")
 public class Client extends User{
-    public boolean puedeGestionarEnvios() { return true; }
+    public boolean puedeVerProductos() { return true; }
 
 }

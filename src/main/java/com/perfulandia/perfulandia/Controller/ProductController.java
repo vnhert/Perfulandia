@@ -17,6 +17,10 @@ public class ProductController {
     public String getProducts(@RequestBody User solicitante) {
         return productService.getProducts(solicitante);
     }
+    @GetMapping("/catalogo")
+    public String verProducts(@RequestBody User solicitante) {
+        return productService.verProducts(solicitante);
+    }
 
     @GetMapping("/{id}")
     public String getProduct(@RequestBody User solicitante, @PathVariable int id) {

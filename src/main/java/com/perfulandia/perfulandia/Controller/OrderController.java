@@ -39,4 +39,9 @@ public class OrderController {
     public String updateOrder(@RequestBody OrderActionRequest request, @PathVariable int id) {
         return orderService.updateOrder(request.getSolicitante(), id, request.getOrder());
     }
+
+    @PutMapping("/{id}/estado")
+    public String updateStateOrder(@RequestBody OrderActionRequest request, @PathVariable int id) {
+        return orderService.updateStateOrder(request.getSolicitante(), id, request.getOrder());
+    }
 }

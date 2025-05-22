@@ -33,6 +33,25 @@ public class ProductService {
             return output;
         }
     }
+    public String verProducts(User solicitante) {
+        if (!solicitante.puedeVerProductos()) {
+            return "No tienes permiso para ver productos";
+        }
+        String output = "";
+        for (Product product : productRepository.findAll()) {
+            output += "ID Producto: " + product.getId() + "\n";
+            output += "Nombre: " + product.getNombre() + "\n";
+            output += "Descripcion: " + product.getDescripcion() + "\n";
+            output += "Precio: " + product.getPrecio() + "\n";
+            output += "Stock: " + product.getStock() + "\n\n";
+        }
+
+        if (output.isEmpty()) {
+            return "No hay productos registrados";
+        } else {
+            return output;
+        }
+    }
 
     public String addProduct(User solicitante,Product newProduct) {
         if (!solicitante.puedeGestionarProductos()) {
