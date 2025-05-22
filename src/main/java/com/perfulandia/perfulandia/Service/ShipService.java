@@ -3,11 +3,13 @@ package com.perfulandia.perfulandia.Service;
 import com.perfulandia.perfulandia.Model.Ship;
 import com.perfulandia.perfulandia.Model.User;
 import com.perfulandia.perfulandia.Repository.ShipRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
 public class ShipService {
 
+    @Autowired
     private ShipRepository shipRepository;
 
     public String getShips(User solicitante) {

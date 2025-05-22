@@ -13,6 +13,7 @@ public class GerenteSucursal extends User{
     public boolean puedeGestionarProductos() { return true; }
     public boolean puedeGestionarSucursales() { return true; }
     public boolean puedeGestionarPedidos() { return true; }
+    public boolean puedeGestionarEnvios() { return true; }
 
 
 }
