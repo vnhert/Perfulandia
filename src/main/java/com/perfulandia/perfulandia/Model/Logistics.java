@@ -1,20 +1,31 @@
 package com.perfulandia.perfulandia.Model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
+@Table(name = "logistica")
 public class Logistics {
 
     @Id
-    private String id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int id;
 
-    private String estadoPedido;
-    private String rutaOptimizada;
+    private String empresa;
+    private String estadoEnvio;
+    private String trackingNumber;
+    @ManyToOne
+    @JoinColumn(name = "proveedor_id")
+    private Proveedor proveedor;
+
+    @OneToMany(mappedBy = "logistica")
+    private List<Order> pedidos;
 }

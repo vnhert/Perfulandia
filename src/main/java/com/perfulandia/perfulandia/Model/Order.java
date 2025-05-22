@@ -20,4 +20,8 @@ public class Order {
     private String metodoEnvio;
     private double costo;
 
+    @ManyToOne
+    @JoinColumn(name = "logistica_id")
+    private Logistics logistica;
+
 }
