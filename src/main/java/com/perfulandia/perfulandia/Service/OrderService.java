@@ -1,6 +1,7 @@
 package com.perfulandia.perfulandia.Service;
 import com.perfulandia.perfulandia.Model.Order;
 import com.perfulandia.perfulandia.Model.Product;
+import com.perfulandia.perfulandia.Model.User;
 import com.perfulandia.perfulandia.Repository.OrderRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -14,16 +15,20 @@ public class OrderService {
     private OrderRepository orderRepository;
 
 
-    public String getOrders() {
+    public String getOrders(User solicitante) {
+        if (!solicitante.puedeGestionarPedidos()) {
+            return "No tienes permiso para ver pedidos";
+        }
         String output = "";
         for (Order order : orderRepository.findAll()) {
             output += "ID de pedido: " + order.getId() + "\n";
             output += "Estado del pedido: " + order.getEstado() + "\n";
             output += "Fecha de entrega: " + order.getFechaEntrega() + "\n";
-            output += "Metodo de envio: " + order.getMetodoEnvio() + "\n";
-            output += "Costo de envio: " + order.getCosto() + "\n\n";
+            output += "Producto a abastecer: " + order.getProduct() + "\n";
+            output += "Cantidad de producto: " + order.getCantidad() + "\n";
+            output += "Sucursal asignada: " + order.getBranch() + "\n";
+            output += "¿Autorizado?: " + (order.isAutorizado() ? "Sí" : "No") + "\n\n";
         }
-
         if (output.isEmpty()) {
             return "No hay pedidos registrados";
         } else {
@@ -31,31 +36,37 @@ public class OrderService {
         }
     }
 
-    public String addOrder(Order newOrder) {
+    public String addOrder(User solicitante, Order newOrder) {
+        if (!solicitante.puedeGestionarPedidos()) {
+            return "No tienes permiso para agregar pedidos";
+        }
         orderRepository.save(newOrder);
         return "Pedido agregado con éxito";
     }
 
-    public String getOrder(int id) {
-        String output = "";
-        for (Order order : orderRepository.findAll()) {
-            if (order.getId() == id) {
-                output += "ID de pedido: " + order.getId() + "\n";
-                output += "Estado del pedido: " + order.getEstado() + "\n";
-                output += "Fecha de entrega: " + order.getFechaEntrega() + "\n";
-                output += "Metodo de envio: " + order.getMetodoEnvio() + "\n";
-                output += "Costo de envio: " + order.getCosto() + "\n\n";
-            }
+    public String getOrder(User solicitante, int id) {
+        if (!solicitante.puedeGestionarPedidos()) {
+            return "No tienes permiso para ver pedidos";
         }
-
-        if (output.isEmpty()) {
+        Order order = orderRepository.findById(id).orElse(null);
+        if (order == null) {
             return "Pedido no encontrado";
-        } else {
-            return output;
         }
+        String output = "";
+        output += "ID de pedido: " + order.getId() + "\n";
+        output += "Estado del pedido: " + order.getEstado() + "\n";
+        output += "Fecha de entrega: " + order.getFechaEntrega() + "\n";
+        output += "Producto a abastecer: " + order.getProduct() + "\n";
+        output += "Cantidad de producto: " + order.getCantidad() + "\n";
+        output += "Sucursal asignada: " + order.getBranch() + "\n";
+        output += "¿Autorizado?: " + (order.isAutorizado() ? "Sí" : "No") + "\n";
+        return output;
     }
 
-    public String deleteOrder(int id) {
+    public String deleteOrder(User solicitante, int id) {
+        if (!solicitante.puedeGestionarPedidos()) {
+            return "No tienes permiso para eliminar pedidos";
+        }
         if (orderRepository.existsById(id)) {
             orderRepository.deleteById(id);
             return "Pedido eliminado con éxito";
@@ -64,21 +75,22 @@ public class OrderService {
         }
     }
 
-    public String updateOrder(int id, Order newOrder) {
-        if (orderRepository.existsById(id)) {
-            for (Order order : orderRepository.findAll()) {
-                if (order.getId() == id) {
-                    order.setEstado(newOrder.getEstado());
-                    order.setFechaEntrega(newOrder.getFechaEntrega());
-                    order.setMetodoEnvio(newOrder.getMetodoEnvio());
-                    order.setCosto(newOrder.getCosto());
-
-                }
-            }
-            return "Pedido actualizado con éxito";
-        } else {
+    public String updateOrder(User solicitante, int id, Order newOrder) {
+        if (!solicitante.puedeGestionarPedidos()) {
+            return "No tienes permiso para actualizar pedidos";
+        }
+        Order order = orderRepository.findById(id).orElse(null);
+        if (order == null) {
             return "Pedido no encontrado";
         }
+        order.setEstado(newOrder.getEstado());
+        order.setFechaEntrega(newOrder.getFechaEntrega());
+        order.setCantidad(newOrder.getCantidad());
+        order.setBranch(newOrder.getBranch());
+        order.setProduct(newOrder.getProduct());
+        order.setAutorizado(newOrder.isAutorizado());
+        orderRepository.save(order);
+        return "Pedido actualizado con éxito";
     }
 
 }

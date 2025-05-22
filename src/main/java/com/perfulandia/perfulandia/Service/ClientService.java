@@ -14,21 +14,22 @@ public class ClientService {
         for (Client client : clientRepository.findAll()) {
             output.append("ID Cliente: ").append(client.getId()).append("\n");
             output.append("Nombre Cliente: ").append(client.getNombre()).append("\n");
-            output.append("Email: ").append(client.getEmail()).append("\n");
-            output.append("Dirección: ").append(client.getDireccion()).append("\n");
-            output.append("Teléfono: ").append(client.getTelefono()).append("\n\n");
+            output.append("Correo: ").append(client.getCorreo()).append("\n");
+
         }
         return output.isEmpty() ? "No se encontraron clientes" : output.toString();
     }
 
     public String getClient(int id) {
-        return clientRepository.findById(id)
-                .map(client -> "ID Cliente: " + client.getId() + "\n"
-                        + "Nombre Cliente: " + client.getNombre() + "\n"
-                        + "Email: " + client.getEmail() + "\n"
-                        + "Dirección: " + client.getDireccion() + "\n"
-                        + "Teléfono: " + client.getTelefono())
-                .orElse("No se encontró al cliente");
+        String output = "";
+        for (Client client : clientRepository.findAll()) {
+            if (client.getId() == id) {
+                output += "ID Cliente: " + client.getId() + "\n";
+                output += "Nombre Cliente: " + client.getNombre() + "\n";
+                output += "Correo: " + client.getCorreo() + "\n";
+            }
+        }
+        return output.isEmpty() ? "No se encontró al cliente" : output;
     }
 
     public String addClient(Client client) {
@@ -45,12 +46,16 @@ public class ClientService {
         }
     }
 
-    public String updateClient(Client updatedClient) {
-        if (clientRepository.existsById(updatedClient.getId())) {
-            clientRepository.save(updatedClient);
-            return "Cliente actualizado exitosamente";
-        } else {
-            return "No se encontró al cliente";
+    public String updateClient(int id, Client updatedClient) {
+        if (clientRepository.existsById(id)) {
+            Client client = clientRepository.findById(id).orElse(null);
+            if (client != null) {
+                client.setNombre(updatedClient.getNombre());
+                client.setCorreo(updatedClient.getCorreo());
+                clientRepository.save(client);
+                return "Cliente actualizado exitosamente";
+            }
         }
+        return "No se encontró al cliente";
     }
 }
