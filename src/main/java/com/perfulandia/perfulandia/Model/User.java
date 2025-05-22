@@ -16,7 +16,7 @@ import lombok.NoArgsConstructor;
         @JsonSubTypes.Type(value = EmpleadoVentas.class, name = "EMPLEADO_VENTAS"),
         @JsonSubTypes.Type(value = GerenteSucursal.class, name = "GERENTE_SUCURSAL"),
         @JsonSubTypes.Type(value = PersonalLogistica.class, name = "PERSONAL_LOGISTICA"),
-        @JsonSubTypes.Type(value = PersonalLogistica.class, name = "CLIENTE")
+        @JsonSubTypes.Type(value = Client.class, name = "CLIENTE")
 })
 
 @Data
@@ -45,5 +45,6 @@ public abstract class User {
 
     public boolean puedeGestionarEnvios() { return false; }
     public boolean puedeActualizarPedido() { return false; }
+    public boolean puedeCrearEnvio() { return false; }
 
 }

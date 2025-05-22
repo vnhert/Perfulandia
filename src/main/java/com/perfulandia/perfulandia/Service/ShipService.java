@@ -1,16 +1,21 @@
 package com.perfulandia.perfulandia.Service;
 
-import com.perfulandia.perfulandia.Model.Ship;
-import com.perfulandia.perfulandia.Model.User;
+import com.perfulandia.perfulandia.Model.*;
+import com.perfulandia.perfulandia.Repository.ShipProductRepository;
 import com.perfulandia.perfulandia.Repository.ShipRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class ShipService {
 
     @Autowired
     private ShipRepository shipRepository;
+    @Autowired
+    private ShipProductRepository shipProductRepository;
 
     public String getShips(User solicitante) {
         if (!solicitante.puedeGestionarEnvios()) {
@@ -76,4 +81,35 @@ public class ShipService {
         shipRepository.save(ship);
         return "Envío actualizado con éxito";
     }
+
+    public String crearEnvio(User solicitante, Client cliente, List<Product> productos, List<Integer> cantidades) {
+        if (!solicitante.puedeCrearEnvio()) {
+            return "No tienes permiso para crear envíos";
+        }
+        if (productos.size() != cantidades.size()) {
+            return "La cantidad de productos y cantidades no coincide";
+        }
+
+        Ship envio = new Ship();
+        envio.setCliente(cliente);
+        envio.setEstado("Pendiente");
+        envio.setFechaEntrega(null);
+        envio = shipRepository.save(envio);
+
+        List<ShipProduct> shipProducts = new ArrayList<>();
+        for (int i = 0; i < productos.size(); i++) {
+            ShipProduct sp = new ShipProduct();
+            sp.setShip(envio);
+            sp.setProduct(productos.get(i));
+            sp.setCantidad(cantidades.get(i));
+            shipProductRepository.save(sp);
+            shipProducts.add(sp);
+        }
+        envio.setProductos(shipProducts);
+        shipRepository.save(envio);
+
+        return "Envío creado con éxito";
+    }
+
+
 }

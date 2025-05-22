@@ -11,6 +11,8 @@ import java.util.Date;
 @NoArgsConstructor
 @Entity
 
+
+
 @Table(name = "Envio")
 public class Ship {
     @Id
@@ -21,4 +23,7 @@ public class Ship {
     @ManyToOne
     @JoinColumn(name = "client_id")
     private Client cliente;
+
+    @OneToMany(mappedBy = "ship", cascade = CascadeType.ALL)
+    private java.util.List<ShipProduct> productos;
 }

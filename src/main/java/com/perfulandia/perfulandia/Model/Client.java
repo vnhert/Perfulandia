@@ -10,5 +10,6 @@ import lombok.NoArgsConstructor;
 @DiscriminatorValue("CLIENTE")
 public class Client extends User{
     public boolean puedeVerProductos() { return true; }
+    public boolean puedeCrearEnvio() { return true; }
 
 }

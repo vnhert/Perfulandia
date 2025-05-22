@@ -6,36 +6,43 @@ import com.perfulandia.perfulandia.Model.User;
 import com.perfulandia.perfulandia.Service.ShipService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import com.perfulandia.perfulandia.Model.CrearEnvioRequest;
 
 @RestController
 @RequestMapping("/envios")
-public class ShipController {
-    @Autowired
-    private ShipService shipService;
+    public class ShipController {
+        @Autowired
+        private ShipService shipService;
 
-    // Ejemplo: pasar el usuario como parámetro (ajusta según tu autenticación real)
-    @GetMapping
-    public String getShips(@RequestBody User solicitante) {
-        return shipService.getShips(solicitante);
-    }
 
-    @GetMapping("/{id}")
-    public String getShip(@RequestBody User solicitante, @PathVariable int id) {
-        return shipService.getShip(solicitante, id);
+        @PostMapping("/crear")
+        public String crearEnvio(@RequestBody CrearEnvioRequest request) {
+        return shipService.crearEnvio(request.solicitante, request.cliente, request.productos, request.cantidades);
     }
+        // Ejemplo: pasar el usuario como parámetro (ajusta según tu autenticación real)
+        @GetMapping
+        public String getShips(@RequestBody User solicitante) {
+            return shipService.getShips(solicitante);
+        }
 
-    @PostMapping
-    public String addShip(@RequestBody User solicitante, @RequestBody Ship newShip) {
-        return shipService.addShip(solicitante, newShip);
-    }
+        @GetMapping("/{id}")
+        public String getShip(@RequestBody User solicitante, @PathVariable int id) {
+            return shipService.getShip(solicitante, id);
+        }
 
-    @PutMapping("/{id}")
-    public String updateShip(@RequestBody User solicitante, @PathVariable int id, @RequestBody Ship newShip) {
-        return shipService.updateShip(solicitante, id, newShip);
-    }
+        @PostMapping
+        public String addShip(@RequestBody User solicitante, @RequestBody Ship newShip) {
+            return shipService.addShip(solicitante, newShip);
+        }
 
-    @DeleteMapping("/{id}")
-    public String deleteShip(@RequestBody User solicitante, @PathVariable int id) {
-        return shipService.deleteShip(solicitante, id);
-    }
+        @PutMapping("/{id}")
+        public String updateShip(@RequestBody User solicitante, @PathVariable int id, @RequestBody Ship newShip) {
+            return shipService.updateShip(solicitante, id, newShip);
+        }
+
+        @DeleteMapping("/{id}")
+        public String deleteShip(@RequestBody User solicitante, @PathVariable int id) {
+            return shipService.deleteShip(solicitante, id);
+        }
 }
+
