@@ -5,11 +5,10 @@ import com.perfulandia.perfulandia.Service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-<<<<<<< HEAD
+
 @RestController
 @RequestMapping("/pedidos")
-=======
->>>>>>> 6cbf6e59fbe712e29b6debeddb50ead12b0f203c
+
 public class OrderController {
     @Autowired
     private OrderService orderService;
