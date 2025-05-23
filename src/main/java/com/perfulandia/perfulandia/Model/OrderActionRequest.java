@@ -6,4 +6,5 @@ import lombok.Data;
 public class OrderActionRequest {
     private User solicitante;
     private Order order;
+
 }

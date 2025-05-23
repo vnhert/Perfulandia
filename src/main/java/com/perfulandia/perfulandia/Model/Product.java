@@ -23,5 +23,8 @@ public class Product {
     private int stock;
     private String categoria;
 
+    public Product(Integer id) {
+        this.id = id;
+    }
 
 }

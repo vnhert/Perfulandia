@@ -11,4 +11,6 @@ public class CrearEnvioRequest {
     public Client cliente;
     public List<Product> productos;
     public List<Integer> cantidades;
+    public String cupon;
+
 }

@@ -40,6 +40,7 @@ public class OrderService {
         if (!solicitante.puedeGestionarPedidos()) {
             return "No tienes permiso para agregar pedidos";
         }
+
         orderRepository.save(newOrder);
         return "Pedido agregado con éxito";
     }

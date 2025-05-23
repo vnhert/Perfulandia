@@ -5,6 +5,7 @@ import com.perfulandia.perfulandia.Repository.ShipProductRepository;
 import com.perfulandia.perfulandia.Repository.ShipRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import com.perfulandia.perfulandia.Repository.CuponRepository;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,6 +17,8 @@ public class ShipService {
     private ShipRepository shipRepository;
     @Autowired
     private ShipProductRepository shipProductRepository;
+    @Autowired
+    private CuponRepository cuponRepository;
 
     public String getShips(User solicitante) {
         if (!solicitante.puedeGestionarEnvios()) {
@@ -82,7 +85,7 @@ public class ShipService {
         return "Envío actualizado con éxito";
     }
 
-    public String crearEnvio(User solicitante, Client cliente, List<Product> productos, List<Integer> cantidades) {
+    public String crearEnvio(User solicitante, Client cliente, List<Product> productos, List<Integer> cantidades,String cupon) {
         if (!solicitante.puedeCrearEnvio()) {
             return "No tienes permiso para crear envíos";
         }
@@ -94,6 +97,9 @@ public class ShipService {
         envio.setCliente(cliente);
         envio.setEstado("Pendiente");
         envio.setFechaEntrega(null);
+        if (cupon != null && !cupon.isEmpty()) {
+            envio.setCupon(cupon);
+        }
         envio = shipRepository.save(envio);
 
         List<ShipProduct> shipProducts = new ArrayList<>();

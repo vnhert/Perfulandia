@@ -17,7 +17,7 @@ import com.perfulandia.perfulandia.Model.CrearEnvioRequest;
 
         @PostMapping("/crear")
         public String crearEnvio(@RequestBody CrearEnvioRequest request) {
-        return shipService.crearEnvio(request.solicitante, request.cliente, request.productos, request.cantidades);
+        return shipService.crearEnvio(request.solicitante, request.cliente, request.productos, request.cantidades, request.cupon);
     }
         // Ejemplo: pasar el usuario como parámetro (ajusta según tu autenticación real)
         @GetMapping

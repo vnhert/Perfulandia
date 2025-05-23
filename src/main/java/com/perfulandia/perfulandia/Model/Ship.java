@@ -26,4 +26,6 @@ public class Ship {
 
     @OneToMany(mappedBy = "ship", cascade = CascadeType.ALL)
     private java.util.List<ShipProduct> productos;
+
+    private String cupon;
 }
