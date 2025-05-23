@@ -11,5 +11,6 @@ import lombok.NoArgsConstructor;
 public class Client extends User{
     public boolean puedeVerProductos() { return true; }
     public boolean puedeCrearEnvio() { return true; }
+    public boolean puedeDejarReseñas() { return true; }
 
 }

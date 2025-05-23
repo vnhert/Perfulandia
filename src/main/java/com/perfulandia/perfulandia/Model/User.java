@@ -46,5 +46,7 @@ public abstract class User {
     public boolean puedeGestionarEnvios() { return false; }
     public boolean puedeActualizarPedido() { return false; }
     public boolean puedeCrearEnvio() { return false; }
+    public boolean puedeDejarReseñas() { return false; }
+    public boolean puedeVerReseñas() { return false; }
 
 }
