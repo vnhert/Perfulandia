@@ -33,13 +33,3 @@ Este proyecto es una solución de transformación digital desarrollada para **Pe
    ```bash
    git clone https://github.com/usuario/perfulandia.git
    cd perfulandia
-   2. **Configurar conexión a base de datos**
-Edita el archivo src/main/resources/application.properties:
-
-properties
-Copiar
-Editar
-spring.datasource.url=jdbc:oracle:thin:@<TU_ORACLE_CLOUD_DB>
-spring.datasource.username=TU_USUARIO
-spring.datasource.password=TU_CONTRASEÑA
-spring.jpa.hibernate.ddl-auto=update
