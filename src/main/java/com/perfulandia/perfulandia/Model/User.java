@@ -35,6 +35,15 @@ public abstract class User {
     private String correo;
     private String contraseña;
 
+    // --- ¡¡AÑADIDO!! ---
+    @ManyToOne // Un usuario pertenece a UNA sucursal
+    @JoinColumn(name = "branch_id") // Columna de la clave foránea en la tabla 'usuario'
+    private Branch branch; // <-- ¡Añade esta línea!
+
+    private String telefono; // <-- Añade esta línea para setTelefono()
+    private String direccion; // <-- Añade esta línea para setDireccion()
+
+
     public boolean puedeGestionarUsuarios() { return false; }
     public boolean puedeGestionarProductos() { return false; }
     public boolean puedeVerProductos() { return false; }

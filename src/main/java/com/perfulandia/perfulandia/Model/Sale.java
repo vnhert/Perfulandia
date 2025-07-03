@@ -4,6 +4,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.Date;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -21,7 +23,7 @@ public class Sale {
     @JoinColumn(name = "client_id")
     private Client client;
     private int cantidad;
-    private String fecha;
+    private Date fecha; //cambie String por date
 
     @ManyToOne
     @JoinColumn(name = "branch_id")
