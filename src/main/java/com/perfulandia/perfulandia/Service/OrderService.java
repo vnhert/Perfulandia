@@ -107,4 +107,9 @@ public class OrderService {
         return "Estado del Pedido actualizado con éxito";
     }
 
+    public List<Order> findByEstado(String estado) {
+        return orderRepository.findByEstado(estado);
+    }
+
+
 }

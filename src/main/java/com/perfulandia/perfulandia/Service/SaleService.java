@@ -6,6 +6,8 @@ import com.perfulandia.perfulandia.Repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class SaleService {
     @Autowired
@@ -96,5 +98,11 @@ public class SaleService {
             return "Venta no encontrada";
         }
     }
+
+
+    public List<Sale> findByClientId(Integer clientId) {
+        return saleRepository.findByClientId(clientId);
+    }
+
 
 }

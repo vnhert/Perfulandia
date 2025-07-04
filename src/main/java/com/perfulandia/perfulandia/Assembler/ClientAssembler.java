@@ -10,4 +10,11 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.*;
 
 @Component
 public class ClientAssembler implements RepresentationModelAssembler<Client, EntityModel<Client>> {
+    @Override
+    public EntityModel<Client> toModel(Client client) {
+        return EntityModel.of(client,
+                linkTo(methodOn(ClientController.class).getClient(client.getId())).withSelfRel(),
+                linkTo(methodOn(ClientController.class).getClients()).withRel("clientes")
+        );
+    }
 }
