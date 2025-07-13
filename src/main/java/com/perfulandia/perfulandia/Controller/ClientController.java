@@ -12,7 +12,7 @@ import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.CollectionModel;
 
 import java.util.List;
-import java.util.stream.Collectors
+import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 @Tag(name = "Clientes", description = "Operaciones relacionadas con los clientes")

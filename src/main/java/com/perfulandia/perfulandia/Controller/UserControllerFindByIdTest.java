@@ -4,6 +4,7 @@ import com.perfulandia.perfulandia.Model.GerenteSucursal;
 import com.perfulandia.perfulandia.Service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 
+
 import java.util.Optional;
 
 import static java.nio.file.Paths.get;
