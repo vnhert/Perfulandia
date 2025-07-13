@@ -1,61 +1,52 @@
 package com.perfulandia.perfulandia.Service;
+
 import com.perfulandia.perfulandia.Model.Client;
 import com.perfulandia.perfulandia.Repository.ClientRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.Optional; // Import Optional
 
 @Service
 public class ClientService {
     @Autowired
     private ClientRepository clientRepository;
 
-    public String getClients() {
-        StringBuilder output = new StringBuilder();
-        for (Client client : clientRepository.findAll()) {
-            output.append("ID Cliente: ").append(client.getId()).append("\n");
-            output.append("Nombre Cliente: ").append(client.getNombre()).append("\n");
-            output.append("Correo: ").append(client.getCorreo()).append("\n");
-
-        }
-        return output.isEmpty() ? "No se encontraron clientes" : output.toString();
+    // Modified to return List<Client> instead of String
+    public List<Client> getClients() {
+        return clientRepository.findAll();
     }
 
-    public String getClient(int id) {
-        String output = "";
-        for (Client client : clientRepository.findAll()) {
-            if (client.getId() == id) {
-                output += "ID Cliente: " + client.getId() + "\n";
-                output += "Nombre Cliente: " + client.getNombre() + "\n";
-                output += "Correo: " + client.getCorreo() + "\n";
-            }
-        }
-        return output.isEmpty() ? "No se encontró al cliente" : output;
+    // Modified to return Client instead of String, throws ClientNotFoundException
+    public Client getClient(int id) {
+        return clientRepository.findById(id)
+                .orElseThrow(() -> new ClientNotFoundException("Cliente no encontrado con ID: " + id));
     }
 
-    public String addClient(Client client) {
-        clientRepository.save(client);
-        return "Cliente agregado exitosamente";
+    // Modified to return the saved Client instead of String
+    public Client addClient(Client client) {
+        return clientRepository.save(client);
     }
 
-    public String deleteClient(int id) {
-        if (clientRepository.existsById(id)) {
-            clientRepository.deleteById(id);
-            return "Cliente eliminado exitosamente";
-        } else {
-            return "No se encontró al cliente";
+    // Modified to return void and throw ClientNotFoundException if not found
+    public void deleteClient(int id) {
+        if (!clientRepository.existsById(id)) {
+            throw new ClientNotFoundException("Cliente no encontrado con ID: " + id);
         }
+        clientRepository.deleteById(id);
     }
 
-    public String updateClient(int id, Client updatedClient) {
-        if (clientRepository.existsById(id)) {
-            Client client = clientRepository.findById(id).orElse(null);
-            if (client != null) {
-                client.setNombre(updatedClient.getNombre());
-                client.setCorreo(updatedClient.getCorreo());
-                clientRepository.save(client);
-                return "Cliente actualizado exitosamente";
-            }
-        }
-        return "No se encontró al cliente";
+    // Modified to return the updated Client, throws ClientNotFoundException if not found
+    public Client updateClient(int id, Client updatedClient) {
+        Client client = clientRepository.findById(id)
+                .orElseThrow(() -> new ClientNotFoundException("Cliente no encontrado con ID: " + id));
+
+        // Update properties
+        client.setNombre(updatedClient.getNombre());
+        client.setCorreo(updatedClient.getCorreo());
+        // Add other properties to update as needed, e.g., client.setContrasena(updatedClient.getContrasena());
+
+        return clientRepository.save(client);
     }
 }

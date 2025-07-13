@@ -1,6 +1,7 @@
-package com.perfulandia.perfulandia.Service;
+package com.perfulandia.perfulandia;
 import com.perfulandia.perfulandia.Model.Client;
 import com.perfulandia.perfulandia.Repository.ClientRepository;
+import com.perfulandia.perfulandia.Service.ClientService;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;

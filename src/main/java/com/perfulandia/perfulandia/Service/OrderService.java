@@ -1,115 +1,94 @@
 package com.perfulandia.perfulandia.Service;
+
 import com.perfulandia.perfulandia.Model.Order;
-import com.perfulandia.perfulandia.Model.Product;
-import com.perfulandia.perfulandia.Model.User;
+import com.perfulandia.perfulandia.Model.User; // Still needed for other methods like addOrder
 import com.perfulandia.perfulandia.Repository.OrderRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import java.util.ArrayList;
+
 import java.util.List;
+import java.util.Optional; // Ensure this is imported
 
 @Service
-
 public class OrderService {
     @Autowired
     private OrderRepository orderRepository;
 
-
-    public String getOrders(User solicitante) {
-        if (!solicitante.puedeGestionarPedidos()) {
-            return "No tienes permiso para ver pedidos";
-        }
-        String output = "";
-        for (Order order : orderRepository.findAll()) {
-            output += "ID de pedido: " + order.getId() + "\n";
-            output += "Estado del pedido: " + order.getEstado() + "\n";
-            output += "Fecha de entrega: " + order.getFechaEntrega() + "\n";
-            output += "Producto a abastecer: " + order.getProduct() + "\n";
-            output += "Cantidad de producto: " + order.getCantidad() + "\n";
-            output += "Sucursal asignada: " + order.getBranch() + "\n";
-            output += "¿Autorizado?: " + (order.isAutorizado() ? "Sí" : "No") + "\n\n";
-        }
-        if (output.isEmpty()) {
-            return "No hay pedidos registrados";
-        } else {
-            return output;
-        }
+    // Corrected getOrders method:
+    // It should NOT take a User parameter if the controller is not passing one
+    // Authorization should be handled by a security layer (e.g., Spring Security)
+    // or by obtaining the user from a security context within the service.
+    public List<Order> getOrders() { // REMOVED 'User solicitante' parameter
+        // IMPORTANT: If you still need user authorization, you'd get the current user
+        // from Spring Security's SecurityContextHolder here. For example:
+        // User currentUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        // if (!currentUser.puedeGestionarPedidos()) {
+        //     throw new UnauthorizedException("No tienes permiso para ver pedidos");
+        // }
+        return orderRepository.findAll();
     }
 
-    public String addOrder(User solicitante, Order newOrder) {
-        if (!solicitante.puedeGestionarPedidos()) {
-            return "No tienes permiso para agregar pedidos";
-        }
-
-        orderRepository.save(newOrder);
-        return "Pedido agregado con éxito";
+    // Corrected getOrder method:
+    // It should ONLY take 'int id' as a parameter if the controller is only passing 'id'
+    // Authorization should be handled by a security layer or internally.
+    public Order getOrder(int id) { // REMOVED 'User solicitante' parameter
+        // Same authorization consideration as getOrders()
+        // User currentUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        // if (!currentUser.puedeGestionarPedidos()) {
+        //     throw new UnauthorizedException("No tienes permiso para ver pedidos");
+        // }
+        return orderRepository.findById(id)
+                .orElseThrow(() -> new OrderNotFoundException("Pedido no encontrado con ID: " + id));
     }
 
-    public String getOrder(User solicitante, int id) {
+    // Keep the following methods as they are (they correctly take User solicitante via @RequestBody in controller)
+
+    public Order addOrder(User solicitante, Order newOrder) {
         if (!solicitante.puedeGestionarPedidos()) {
-            return "No tienes permiso para ver pedidos";
+            throw new UnauthorizedException("No tienes permiso para agregar pedidos");
         }
-        Order order = orderRepository.findById(id).orElse(null);
-        if (order == null) {
-            return "Pedido no encontrado";
-        }
-        String output = "";
-        output += "ID de pedido: " + order.getId() + "\n";
-        output += "Estado del pedido: " + order.getEstado() + "\n";
-        output += "Fecha de entrega: " + order.getFechaEntrega() + "\n";
-        output += "Producto a abastecer: " + order.getProduct() + "\n";
-        output += "Cantidad de producto: " + order.getCantidad() + "\n";
-        output += "Sucursal asignada: " + order.getBranch() + "\n";
-        output += "¿Autorizado?: " + (order.isAutorizado() ? "Sí" : "No") + "\n";
-        return output;
+        return orderRepository.save(newOrder);
     }
 
-    public String deleteOrder(User solicitante, int id) {
+    public void deleteOrder(User solicitante, int id) {
         if (!solicitante.puedeGestionarPedidos()) {
-            return "No tienes permiso para eliminar pedidos";
+            throw new UnauthorizedException("No tienes permiso para eliminar pedidos");
         }
-        if (orderRepository.existsById(id)) {
-            orderRepository.deleteById(id);
-            return "Pedido eliminado con éxito";
-        } else {
-            return "Pedido no encontrado";
+        if (!orderRepository.existsById(id)) {
+            throw new OrderNotFoundException("Pedido no encontrado con ID: " + id);
         }
+        orderRepository.deleteById(id);
     }
 
-    public String updateOrder(User solicitante, int id, Order newOrder) {
+    public Order updateOrder(User solicitante, int id, Order updatedOrderData) {
         if (!solicitante.puedeGestionarPedidos()) {
-            return "No tienes permiso para actualizar pedidos";
+            throw new UnauthorizedException("No tienes permiso para actualizar pedidos");
         }
-        Order order = orderRepository.findById(id).orElse(null);
-        if (order == null) {
-            return "Pedido no encontrado";
-        }
-        order.setEstado(newOrder.getEstado());
-        order.setFechaEntrega(newOrder.getFechaEntrega());
-        order.setCantidad(newOrder.getCantidad());
-        order.setBranch(newOrder.getBranch());
-        order.setProduct(newOrder.getProduct());
-        order.setAutorizado(newOrder.isAutorizado());
-        orderRepository.save(order);
-        return "Pedido actualizado con éxito";
+        Order order = orderRepository.findById(id)
+                .orElseThrow(() -> new OrderNotFoundException("Pedido no encontrado con ID: " + id));
+
+        order.setEstado(updatedOrderData.getEstado());
+        order.setFechaEntrega(updatedOrderData.getFechaEntrega());
+        order.setCantidad(updatedOrderData.getCantidad());
+        order.setBranch(updatedOrderData.getBranch());
+        order.setProduct(updatedOrderData.getProduct());
+        order.setAutorizado(updatedOrderData.isAutorizado());
+
+        return orderRepository.save(order);
     }
 
-    public String updateStateOrder(User solicitante, int id, Order newOrder) {
-        if (!solicitante.puedeActualizarPedido()) {
-            return "No tienes permiso para actualizar estado de pedidos";
+    public Order updateStateOrder(User solicitante, int id, Order updatedOrderData) {
+        if (!solicitante.puedeActualizarPedido()) { // Make sure 'puedeActualizarPedido' exists in User
+            throw new UnauthorizedException("No tienes permiso para actualizar estado de pedidos");
         }
-        Order order = orderRepository.findById(id).orElse(null);
-        if (order == null) {
-            return "Pedido no encontrado";
-        }
-        order.setEstado(newOrder.getEstado());
-        orderRepository.save(order);
-        return "Estado del Pedido actualizado con éxito";
+        Order order = orderRepository.findById(id)
+                .orElseThrow(() -> new OrderNotFoundException("Pedido no encontrado con ID: " + id));
+
+        order.setEstado(updatedOrderData.getEstado());
+        return orderRepository.save(order);
     }
 
     public List<Order> findByEstado(String estado) {
         return orderRepository.findByEstado(estado);
     }
-
-
 }
