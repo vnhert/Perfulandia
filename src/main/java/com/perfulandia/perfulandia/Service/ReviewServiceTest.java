@@ -1,20 +1,57 @@
 package com.perfulandia.perfulandia.Service;
-@ExtendWith(MockitoExtension.class)
+
+import com.perfulandia.perfulandia.Model.Review;
+import com.perfulandia.perfulandia.Model.User;
+import com.perfulandia.perfulandia.Repository.ReviewRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+
+@Autowired
+private ReviewRepository reviewRepository;
+
+public String guardarReseña(User solicitante, Review review) {
+    if (!solicitante.puedeDejarReseñas()) {
+        return "No tienes permiso para dejar reseñas";
+    }
+    reviewRepository.save(review);
+    return "Reseña guardada con éxito";
+}
+
 public class ReviewServiceTest {
-    @Mock private ReviewRepository reviewRepo;
-    @InjectMocks private ReviewService reviewService;
+    @Mock
+    private ReviewRepository reviewRepository;
+
+    @InjectMocks
+    private ReviewService reviewService;
 
     @Test
-    void testFindAll() {
+    void testGuardarReseñaConPermiso() {
+        User solicitante = new User();
+        solicitante.setNombre("admin");
+        solicitante.setPuedeDejarReseñas(true);
+
         Review review = new Review();
-        review.setId(1);
+        review.setComentario("Excelente servicio");
+
+        when(reviewRepository.save(review)).thenReturn(review);
+
+        String result = reviewService.guardarReseña(solicitante, review);
+
+        assertEquals("Reseña guardada con éxito", result);
+        verify(reviewRepository, times(1)).save(review);
+    }
+
+    @Test
+    void testGuardarReseñaSinPermiso() {
+        User solicitante = new User();
+        solicitante.setNombre("usuario");
+        solicitante.setPuedeDejarReseñas(false);
+
+        Review review = new Review();
         review.setComentario("Buen producto");
-        when(reviewRepo.findAll()).thenReturn(List.of(review));
 
-        List<Review> reviews = reviewService.findAll();
+        String result = reviewService.guardarReseña(solicitante, review);
 
-        assertNotNull(reviews);
-        assertEquals(1, reviews.size());
-        assertEquals("Buen producto", reviews.get(0).getComentario());
+        assertEquals("No tienes permiso para dejar reseñas", result);
+        verify(reviewRepository, never()).save(any(Review.class));
     }
 }
